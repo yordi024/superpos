@@ -28,7 +28,7 @@ return new class extends Migration
             $table->integer('products_limit');
             $table->integer('invoices_limit');
             $table->integer('locations_limit');
-            $table->json('features');
+            $table->json('features')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
