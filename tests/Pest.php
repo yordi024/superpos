@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use function Pest\Laravel\actingAs;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +45,11 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function loginAsUser(?User $user = null): User
 {
-    // ..
+    $user = $user ?? User::factory()->create()->first();
+
+    actingAs($user);
+
+    return $user;
 }
