@@ -53,3 +53,12 @@ function loginAsUser(?User $user = null): User
 
     return $user;
 }
+
+function loginAsAdmin(?User $user = null): User
+{
+    $user = $user ?? User::factory()->admin()->create()->first();
+
+    actingAs($user);
+
+    return $user;
+}

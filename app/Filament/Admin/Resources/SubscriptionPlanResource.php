@@ -15,9 +15,17 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SubscriptionPlanResource extends Resource
 {
+    protected static ?string $label = 'Plans';
+
+    protected static ?string $modelLabel = 'Plan';
     protected static ?string $model = SubscriptionPlan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function getModelLabel(): string
+    {
+        return trans(static::$modelLabel);
+    }
 
     public static function form(Form $form): Form
     {
@@ -100,8 +108,6 @@ class SubscriptionPlanResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money()
                     ->sortable(),
@@ -124,18 +130,18 @@ class SubscriptionPlanResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('users_limit')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('products_limit')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('invoices_limit')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('locations_limit')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

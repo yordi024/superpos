@@ -9,9 +9,12 @@ use App\Models\Business;
 use Filament\Forms\Form;
 use App\Jobs\ConfigNewBusinessJob;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rules\Password;
 use Filament\Resources\Pages\CreateRecord;
+use App\Models\Subscription\SubscriptionPlan;
 use App\Filament\Admin\Resources\BusinessResource;
+use App\Jobs\NewSubscriptionJob;
 
 class CreateBusiness extends CreateRecord
 {
@@ -43,6 +46,11 @@ class CreateBusiness extends CreateRecord
                                     ->maxLength(255),
                                 Forms\Components\DateTimePicker::make('started_at')
                                     ->label('Start Date')
+                                    ->required(),
+                                Forms\Components\Select::make('plan')
+                                    ->label(trans('Plan'))
+                                    ->options(SubscriptionPlan::active()->get()->pluck('name', 'id'))
+                                    ->searchable()
                                     ->required(),
                                 Forms\Components\Select::make('currency')
                                     ->label(trans('Currency'))
@@ -104,8 +112,10 @@ class CreateBusiness extends CreateRecord
 
     protected function afterCreate(): void
     {
+        $form = $this->form->getState();
         $business = static::getRecord();
 
         ConfigNewBusinessJob::dispatch($business);
+        NewSubscriptionJob::dispatch($business->id, $form['plan']);
     }
 }

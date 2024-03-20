@@ -40,9 +40,14 @@ class BusinessResource extends Resource
                     ->label(trans('Start Date'))
                     ->dateTime()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('subscription.is_active')
+                    ->label(trans('Active subscription'))
+                    ->boolean(),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label(trans('Active'))
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(trans('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

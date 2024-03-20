@@ -3,9 +3,10 @@
 namespace App\Models\Subscription;
 
 use App\Models\Traits\HasSlug;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SubscriptionPlan extends Model
 {
@@ -37,5 +38,10 @@ class SubscriptionPlan extends Model
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class, 'plan_id');
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
     }
 }

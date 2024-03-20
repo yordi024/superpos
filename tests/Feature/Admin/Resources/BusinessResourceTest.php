@@ -12,7 +12,7 @@ use function Pest\Laravel\get;
 
 it('can render business list page', function () {
     // Act & Assert
-    loginAsUser(User::factory()->admin()->create());
+    loginAsAdmin();
 
     get(BusinessResource::getUrl('index'))->assertSuccessful();
 });
@@ -20,14 +20,14 @@ it('can render business list page', function () {
 
 it('can render business create page', function () {
      // Act & Assert
-    loginAsUser(User::factory()->admin()->create());
+    loginAsAdmin();
 
     get(BusinessResource::getUrl('create'))->assertSuccessful();
 });
 
 it('can render business view page', function () {
     // Act & Assert
-    loginAsUser(User::factory()->admin()->create());
+    loginAsAdmin();
 
     get(BusinessResource::getUrl('view', [
         'record' => Business::factory()->create(),
@@ -36,7 +36,7 @@ it('can render business view page', function () {
 
 it('can render business edit page', function () {
     // Act & Assert
-    loginAsUser(User::factory()->admin()->create());
+    loginAsAdmin();
 
     get(BusinessResource::getUrl('edit', [
         'record' => Business::factory()->create(),
@@ -51,7 +51,7 @@ it('can create business record', function () {
     $owner = User::factory()->make();
 
     // Act & Assert
-    loginAsUser(User::factory()->admin()->create());
+    loginAsAdmin();
 
     Livewire::test(BusinessResource\Pages\CreateBusiness::class)
         ->fillForm([
@@ -101,7 +101,7 @@ it('can update business record', function () {
     $newData = Business::factory()->make();
 
     // Act & Assert
-    loginAsUser(User::factory()->admin()->create());
+    loginAsAdmin();
     Livewire::test(BusinessResource\Pages\EditBusiness::class, [
         'record' => $business->getRouteKey(),
     ])->fillForm([
