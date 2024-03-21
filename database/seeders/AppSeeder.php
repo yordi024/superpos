@@ -5,9 +5,12 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Business;
-use App\Models\BusinessLocation;
 use Illuminate\Database\Seeder;
+use App\Jobs\NewSubscriptionJob;
+use App\Models\BusinessLocation;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Subscription\SubscriptionPlan;
+use App\Models\Subscription\SubscriptionPlan;
 
 class AppSeeder extends Seeder
 {
@@ -49,5 +52,9 @@ class AppSeeder extends Seeder
             'addressable_type' => get_class($defaultBusinessLocation),
             'addressable_id' => $defaultBusinessLocation->id,
         ]);
+
+        $ultimatePlan = SubscriptionPlan::findOrFail(2)->first();
+
+        NewSubscriptionJob::dispatch($defaultBusiness->id, $ultimatePlan->id)->onQueue('default');
     }
 }

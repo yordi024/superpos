@@ -12,6 +12,7 @@ it('has all user necessary fields', function () {
         'password' => 'password',
         'is_active' => true,
         'is_admin' => false,
+        'avatar_url' => 'avatar.png',
     ]);
 
     // Act & Assert
@@ -20,6 +21,7 @@ it('has all user necessary fields', function () {
     expect($user->email)->toBe('test@example.com');
     expect($user->is_active)->toBe(true);
     expect($user->is_admin)->toBe(false);
+    expect($user->avatar_url)->toBe('avatar.png');
 });
 
 it('should have admin and app users', function () {

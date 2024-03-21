@@ -19,13 +19,27 @@ type Props = {
 };
 
 export function UserNav({ user }: Props) {
+    const fallbackName = () => {
+        const names = user.name.split(' ');
+        return [
+            names[0][0],
+            names[1] ? names[1][0] : ''
+        ].join('');
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <Avatar className="h-8 w-8">
-                    <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                    <AvatarFallback>SC</AvatarFallback>
-                </Avatar>
+                <div className="flex items-center space-x-2">
+                    <div className="text-xs">
+                        Hello,<br />
+                        <span className="font-semibold">{user.name.split(' ')[0]}</span>
+                    </div>
+                    <Avatar className="h-10 w-10">
+                        <AvatarImage src={user.avatar_url} alt="user avatar" />
+                        <AvatarFallback>{fallbackName()}</AvatarFallback>
+                    </Avatar>
+                </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="font-normal">

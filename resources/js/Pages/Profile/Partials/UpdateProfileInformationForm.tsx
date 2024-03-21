@@ -1,26 +1,31 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useRef } from 'react';
 import { PageProps } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { InputError } from '@/components/ui/input-error';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }: { mustVerifyEmail: boolean, status?: string, className?: string }) {
     const user = usePage<PageProps>().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
+        avatar: null,
         name: user.name,
         username: user.username,
         email: user.email,
+        _method: 'patch',
     });
+
+    const image = data.avatar ? URL.createObjectURL(data.avatar) : user.avatar_url
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        post(route('profile.update'));
     };
 
     return (
@@ -34,7 +39,12 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
             </CardHeader>
 
             <CardContent>
+                {/* <pre>{JSON.stringify(data.avatar)}</pre> */}
                 <form onSubmit={submit} className="space-y-6">
+                    <div>
+                        <ImagePreviewInput image={image} setData={setData} />
+                        <InputError className="mt-2" message={errors.name} />
+                    </div>
                     <div>
                         <Label htmlFor="name">Name</Label>
 
@@ -120,5 +130,35 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 </form>
             </CardContent>
         </Card>
+    );
+}
+
+function ImagePreviewInput({ image, setData }: { image: string, setData: (key: string, value: any) => void }) {
+    const hiddenFileInput = useRef(null);
+
+    const handleFileUploadClick = () => {
+        if (hiddenFileInput.current) {
+            hiddenFileInput.current.click();
+        }
+    }
+
+    return (
+        <>
+            <div role='button' onClick={handleFileUploadClick} className='flex flex-col gap-2 w-[200px]'>
+                <Avatar className="h-14 w-14">
+                    <AvatarImage src={image} alt="user avatar" />
+                    <AvatarFallback>N/A</AvatarFallback>
+                </Avatar>
+                <p className='text-sm font-medium'>Select profile image</p>
+            </div>
+
+            <Input
+                id="avatar"
+                className="mt-1 hidden"
+                type='file'
+                ref={hiddenFileInput}
+                onChange={(e) => setData('avatar', e.target.files[0])}
+            />
+        </>
     );
 }
