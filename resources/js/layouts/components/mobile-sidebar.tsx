@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import { MenuIcon } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SideNav } from "./side-nav";
 import { NavItems } from "@/constants/sidebar-menu";
+import { Button } from "@/components/ui/button";
+import { Link } from "@inertiajs/react";
+import ApplicationLogo from "@/components/ApplicationLogo";
 
 export const MobileSidebar = () => {
   const [open, setOpen] = useState(false);
@@ -20,15 +23,22 @@ export const MobileSidebar = () => {
     <>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <div className="flex items-center justify-center gap-2">
-            <MenuIcon />
-            <h1 className="text-lg font-semibold">SuperPOS</h1>
-          </div>
+          <Button size="icon" variant="outline" className="sm:hidden">
+            <PanelLeft className="h-5 w-5" />
+            <span className="sr-only">Toggle Menu</span>
+          </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-72 p-4">
-          <div className="py-6 pt-10">
+        <SheetContent side="left" className="sm:max-w-xs">
+          <nav className="grid gap-6 text-lg font-medium">
+            <Link
+              href="#"
+              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+            >
+              <ApplicationLogo className="h-5 w-5 transition-all group-hover:scale-110" />
+              <span className="sr-only">SuperPOS</span>
+            </Link>
             <SideNav items={NavItems} setOpen={setOpen} />
-          </div>
+          </nav>
         </SheetContent>
       </Sheet>
     </>

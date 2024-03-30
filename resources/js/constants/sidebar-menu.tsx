@@ -1,37 +1,41 @@
-import { BookOpenCheck, LayoutDashboard } from "lucide-react";
+import { Home, Users2, Plus, List } from "lucide-react";
 import { type NavItem } from "@/types";
+
+export const ROUTES = {
+  DASHBOARD: "dashboard",
+  SEE_USERS: "users.index",
+  CREATE_USER: "users.create",
+};
+
+export const MENU_ROUTES = ["/users"];
 
 export const NavItems: NavItem[] = [
   {
     title: "Dashboard",
-    icon: LayoutDashboard,
-    href: "/dashboard",
+    icon: Home,
+    href: ROUTES.DASHBOARD,
+    path: "/dashboard",
     color: "text-primary",
   },
   {
-    title: "Example",
-    icon: BookOpenCheck,
-    href: "/example",
+    title: "Users",
+    icon: Users2,
+    href: ROUTES.SEE_USERS,
     color: "text-orange-500",
-    isChidren: true,
+    path: "/users",
+    hasChidren: true,
     children: [
       {
-        title: "Example-01",
-        icon: BookOpenCheck,
-        color: "text-red-500",
-        href: "/example/employees",
+        title: "Create User",
+        icon: Plus,
+        color: "text-primary",
+        href: ROUTES.CREATE_USER,
       },
       {
-        title: "Example-02",
-        icon: BookOpenCheck,
-        color: "text-red-500",
-        href: "/example/example-02",
-      },
-      {
-        title: "Example-03",
-        icon: BookOpenCheck,
-        color: "text-red-500",
-        href: "/example/example-03",
+        title: "See Users",
+        icon: List,
+        color: "text-primary",
+        href: ROUTES.SEE_USERS,
       },
     ],
   },

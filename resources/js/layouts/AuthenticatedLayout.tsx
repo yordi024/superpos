@@ -1,17 +1,11 @@
 import { PropsWithChildren, ReactNode } from "react";
 import { User } from "@/types";
-import Header from "./components/header";
 import Sidebar from "./components/sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import Header from "./components/header";
+import { useSidebar } from "@/hooks/useSidebar";
+import { cn } from "@/lib/utils";
 
-export default function Authenticated({
+export default function Dashboard({
   user,
   header,
   children,
@@ -23,41 +17,25 @@ export default function Authenticated({
   subheaderAction?: ReactNode;
   breadcrumbs?: ReactNode;
 }>) {
-  return (
-    <>
-      <Header user={user} />
-      <div className="flex h-screen border-collapse overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto overflow-x-hidden pt-[65px] bg-secondary/30 pb-1">
-          <div className="flex h-full flex-col">
-            <div className="flex-1 space-y-4 p-4 md:p-8">
-              <div className="flex items-center justify-between space-y-2">
-                <div className="flex flex-col justify-center">
-                  <h2 className="text-xl font-bold tracking-tight">{header}</h2>
-                  <Breadcrumb>
-                    <BreadcrumbList>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
-                      </BreadcrumbItem>
-                      {breadcrumbs && (
-                        <>
-                          <BreadcrumbSeparator />
-                          {breadcrumbs}
-                        </>
-                      )}
-                    </BreadcrumbList>
-                  </Breadcrumb>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {subheaderAction}
-                </div>
-              </div>
+  const { isOpen } = useSidebar();
 
-              {children}
-            </div>
-          </div>
+  return (
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <Sidebar />
+      <div
+        className={cn(
+          "flex flex-col sm:gap-4 sm:py-4 sm:pl-14",
+          isOpen && "sm:pl-[18rem]"
+        )}
+      >
+        <Header user={user} breadcrumbs={breadcrumbs} />
+        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+          {header && (
+            <div className="text-xl font-bold tracking-tight">{header}</div>
+          )}
+          {children}
         </main>
       </div>
-    </>
+    </div>
   );
 }

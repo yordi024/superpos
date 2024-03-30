@@ -24,6 +24,7 @@ export interface NavItem {
   href: string;
   icon: LucideIcon;
   color?: string;
-  isChidren?: boolean;
+  hasChidren?: boolean;
+  path?: string;
   children?: NavItem[];
 }

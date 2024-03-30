@@ -1,7 +1,6 @@
 import { type NavItem } from "@/types";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/hooks/useSidebar";
-import { buttonVariants } from "@/components/ui/button";
 
 import {
   Accordion,
@@ -11,7 +10,13 @@ import {
 } from "./subnav-accordion";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface SideNavProps {
   items: NavItem[];
@@ -19,24 +24,30 @@ interface SideNavProps {
   className?: string;
 }
 
-export function SideNav({ items, setOpen, className }: SideNavProps) {
+export function SideNav({ items, setOpen }: SideNavProps) {
+  const { url } = usePage();
   const { isOpen } = useSidebar();
   const [openItem, setOpenItem] = useState("");
-  const [lastOpenItem, setLastOpenItem] = useState("");
 
   useEffect(() => {
-    if (isOpen) {
-      setOpenItem(lastOpenItem);
-    } else {
-      setLastOpenItem(openItem);
-      setOpenItem("");
+    async function handleOpenSubNav() {
+      items.forEach(item => {
+        if (url.startsWith(item.path!)) {
+          setOpenItem(item.title);
+        }
+      });
     }
-  }, [isOpen]);
+    handleOpenSubNav();
+  }, [items, url]);
+
+  if (!openItem) {
+    return null;
+  }
 
   return (
-    <nav className="space-y-2">
+    <TooltipProvider>
       {items.map(item =>
-        item.isChidren ? (
+        item.hasChidren ? (
           <Accordion
             type="single"
             collapsible
@@ -45,83 +56,86 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
             value={openItem}
             onValueChange={setOpenItem}
           >
-            <AccordionItem value={item.title} className="border-none ">
-              <AccordionTrigger
-                className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
-                )}
-              >
-                <div>
-                  <item.icon className={cn("h-5 w-5", item.color)} />
-                </div>
-                <div
-                  className={cn(
-                    "absolute left-12 text-base duration-200 ",
-                    !isOpen && className
-                  )}
-                >
-                  {item.title}
-                </div>
-
-                {isOpen && (
-                  <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
+            <AccordionItem value={item.title} className="border-none">
+              <AccordionTrigger className="py-0 hover:no-underline">
+                {NavItem({
+                  item,
+                  isOpen,
+                  setOpen,
+                  active: item.title === openItem,
+                })}
+                {isOpen && item.hasChidren && (
+                  <ChevronDownIcon className="mr-2 h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200" />
                 )}
               </AccordionTrigger>
-              <AccordionContent className="mt-2 space-y-4 pb-1">
-                {item.children?.map(child => (
-                  <Link
-                    key={child.title}
-                    href={child.href}
-                    onClick={() => {
-                      if (setOpen) setOpen(false);
-                    }}
-                    className={cn(
-                      buttonVariants({ variant: "ghost" }),
-                      "group relative flex h-12 justify-start gap-x-3",
-                      route().current(child.href) &&
-                        "bg-muted font-bold hover:bg-muted"
-                    )}
-                  >
-                    <child.icon className={cn("h-5 w-5", child.color)} />
-                    <div
-                      className={cn(
-                        "absolute left-12 text-base duration-200",
-                        !isOpen && className
-                      )}
-                    >
-                      {child.title}
-                    </div>
-                  </Link>
-                ))}
+              <AccordionContent
+                className={cn("mt-2 grid space-y-1 pb-1", isOpen && "ml-5")}
+              >
+                {item.children?.map(child =>
+                  NavItem({ item: child, isOpen, setOpen, link: true })
+                )}
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         ) : (
-          <Link
-            key={item.title}
-            href={item.href}
-            onClick={() => {
-              if (setOpen) setOpen(false);
-            }}
-            className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "group relative flex h-12 justify-start",
-              route().current(item.href) && "bg-muted font-bold hover:bg-muted"
-            )}
-          >
-            <item.icon className={cn("h-5 w-5", item.color)} />
-            <span
-              className={cn(
-                "absolute left-12 text-base duration-200",
-                !isOpen && className
-              )}
-            >
-              {item.title}
-            </span>
-          </Link>
+          NavItem({ item, isOpen, setOpen, link: true })
         )
       )}
-    </nav>
+    </TooltipProvider>
   );
+}
+
+function NavItem({
+  item,
+  isOpen,
+  setOpen,
+  link,
+  active = false,
+}: {
+  item: NavItem;
+  isOpen: boolean;
+  setOpen: ((open: boolean) => void) | undefined;
+  link?: boolean;
+  active?: boolean;
+}) {
+  const navItem = (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div
+          className={cn(
+            "flex h-9 items-center gap-4 p-2.5 rounded-lg !text-lg text-muted-foreground transition-colors hover:text-foreground",
+            !isOpen && "p-0 w-9 justify-center",
+            (route().current(item.href) || active) &&
+              (isOpen
+                ? "text-accent-foreground"
+                : "bg-accent  text-accent-foreground")
+          )}
+          onClick={() => {
+            if (setOpen && link) setOpen(false);
+          }}
+        >
+          <item.icon className={cn("h-5 w-5")} />
+          <span
+            className={cn(
+              "duration-200",
+              !isOpen && "absolute left-12 opacity-0"
+            )}
+          >
+            {item.title}
+          </span>
+        </div>
+      </TooltipTrigger>
+      {!isOpen && <TooltipContent side="right">{item.title}</TooltipContent>}
+    </Tooltip>
+  );
+
+  if (link) {
+    return (
+      <Link href={route(item.href)} key={item.title}>
+        {navItem}
+      </Link>
+    );
+  }
+
+  return <div key={item.title}>{navItem}</div>;
 }
