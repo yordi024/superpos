@@ -3,6 +3,7 @@ import { type NavItem } from "@/types";
 
 export const ROUTES = {
   DASHBOARD: "dashboard",
+  USERS_GROUP: "users",
   SEE_USERS: "users.index",
   CREATE_USER: "users.create",
 };
@@ -20,7 +21,7 @@ export const NavItems: NavItem[] = [
   {
     title: "Users",
     icon: Users2,
-    href: ROUTES.SEE_USERS,
+    href: ROUTES.USERS_GROUP,
     color: "text-orange-500",
     path: "/users",
     hasChidren: true,

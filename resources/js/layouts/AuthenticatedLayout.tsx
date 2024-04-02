@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 
 export default function Dashboard({
   user,
-  header,
   children,
+  header,
   subheaderAction,
   breadcrumbs,
 }: PropsWithChildren<{
@@ -29,9 +29,16 @@ export default function Dashboard({
         )}
       >
         <Header user={user} breadcrumbs={breadcrumbs} />
-        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 mt-3">
           {header && (
-            <div className="text-xl font-bold tracking-tight">{header}</div>
+            <div className="flex items-center">
+              <div className="text-3xl font-bold tracking-tight">{header}</div>
+              {subheaderAction && (
+                <div className="flex items-center ml-auto gap-2">
+                  {subheaderAction}
+                </div>
+              )}
+            </div>
           )}
           {children}
         </main>

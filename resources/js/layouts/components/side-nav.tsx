@@ -8,9 +8,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./subnav-accordion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
-import { Link, usePage } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import {
   Tooltip,
   TooltipContent,
@@ -25,24 +25,10 @@ interface SideNavProps {
 }
 
 export function SideNav({ items, setOpen }: SideNavProps) {
-  const { url } = usePage();
+  const currentRoute = route().current()?.split(".")[0];
+
   const { isOpen } = useSidebar();
-  const [openItem, setOpenItem] = useState("");
-
-  useEffect(() => {
-    async function handleOpenSubNav() {
-      items.forEach(item => {
-        if (url.startsWith(item.path!)) {
-          setOpenItem(item.title);
-        }
-      });
-    }
-    handleOpenSubNav();
-  }, [items, url]);
-
-  if (!openItem) {
-    return null;
-  }
+  const [openItem, setOpenItem] = useState(currentRoute);
 
   return (
     <TooltipProvider>
@@ -56,7 +42,7 @@ export function SideNav({ items, setOpen }: SideNavProps) {
             value={openItem}
             onValueChange={setOpenItem}
           >
-            <AccordionItem value={item.title} className="border-none">
+            <AccordionItem value={item.href} className="border-none">
               <AccordionTrigger className="py-0 hover:no-underline">
                 {NavItem({
                   item,

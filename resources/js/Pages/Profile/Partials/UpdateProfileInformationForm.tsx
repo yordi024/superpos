@@ -1,6 +1,6 @@
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
-import { FormEventHandler, useRef } from "react";
+import { ChangeEvent, FormEventHandler, useRef } from "react";
 import { PageProps } from "@/types";
 import {
   Card,
@@ -157,11 +157,18 @@ function ImagePreviewInput({
   image: string;
   setData: (key: string, value: any) => void;
 }) {
-  const hiddenFileInput = useRef(null);
+  const hiddenFileInput = useRef<HTMLInputElement | null>(null);
 
   const handleFileUploadClick = () => {
     if (hiddenFileInput.current) {
       hiddenFileInput.current.click();
+    }
+  };
+
+  const handleFileUploadChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      setData("avatar", file);
     }
   };
 
@@ -184,7 +191,7 @@ function ImagePreviewInput({
         className="mt-1 hidden"
         type="file"
         ref={hiddenFileInput}
-        onChange={e => setData("avatar", e.target.files[0])}
+        onChange={handleFileUploadChange}
       />
     </>
   );

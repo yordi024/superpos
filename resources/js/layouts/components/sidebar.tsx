@@ -28,7 +28,7 @@ export default function Sidebar() {
       className={cn(
         "fixed inset-y-0 left-0 z-10 hidden flex-col border-r bg-background sm:flex",
         status && "duration-500",
-        isOpen ? "w-[18rem]" : "w-15"
+        isOpen ? "w-[18rem]" : "w-14"
       )}
     >
       <span
@@ -52,18 +52,6 @@ export default function Sidebar() {
         </Link>
         <SideNav items={NavItems} />
       </nav>
-      {/* <nav className="w-full flex flex-col items-center gap-4 px-2 sm:py-5">
-        <Link
-          href={route("dashboard")}
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-        >
-          <ApplicationLogo className="h-5 w-5 fill-white transition-all group-hover:scale-110" />
-          <span className="sr-only">SuperPOS</span>
-        </Link>
-        <div className="border-b border-muted-foreground w-3/4" />
-
-        <SideNav items={NavItems} />
-      </nav> */}
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
         <TooltipProvider>
           <Tooltip>
