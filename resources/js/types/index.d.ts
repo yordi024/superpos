@@ -45,14 +45,16 @@ export interface PaginationMeta {
   total: number;
 }
 
+export interface PaginationLinks {
+  first: string | null;
+  last: string | null;
+  prev: string | null;
+  next: string | null;
+}
+
 export interface Resources<T> {
   data: T[];
-  links: {
-    first: string;
-    last: string;
-    next: string;
-    prev: string;
-  };
+  links: PaginationLinks;
   meta: PaginationMeta;
 }
 
@@ -60,6 +62,7 @@ export interface Filters {
   search?: string;
   column?: string;
   sort?: string;
+  perPage?: string;
 }
 
 export interface UserResource extends Resources<User> {}

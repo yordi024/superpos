@@ -3,14 +3,14 @@
 namespace App\Jobs;
 
 use App\Models\Business;
-use App\Models\Subscription\Subscription;
-use App\Models\Subscription\SubscriptionPlan;
+use App\Classes\Period;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Rinvex\Subscriptions\Services\Period;
+use App\Models\Subscription\Subscription;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Models\Subscription\SubscriptionPlan;
 
 class NewSubscriptionJob implements ShouldQueue
 {

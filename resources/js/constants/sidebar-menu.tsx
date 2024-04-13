@@ -1,11 +1,10 @@
-import { Home, Users2, Plus, List } from "lucide-react";
+import { Home, Users2, List } from "lucide-react";
 import { type NavItem } from "@/types";
 
 export const ROUTES = {
   DASHBOARD: "dashboard",
   USERS_GROUP: "users",
   SEE_USERS: "users.index",
-  CREATE_USER: "users.create",
 };
 
 export const MENU_ROUTES = ["/users"];
@@ -26,12 +25,6 @@ export const NavItems: NavItem[] = [
     path: "/users",
     hasChidren: true,
     children: [
-      {
-        title: "Create User",
-        icon: Plus,
-        color: "text-primary",
-        href: ROUTES.CREATE_USER,
-      },
       {
         title: "See Users",
         icon: List,

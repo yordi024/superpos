@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Business;
 use Filament\Actions\DeleteAction;
 use App\Filament\Admin\Resources\BusinessResource;
+use App\Models\Subscription\SubscriptionPlan;
 use Livewire\Livewire;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertSoftDeleted;
@@ -50,6 +51,7 @@ it('can create business record', function () {
     ]);
     $owner = User::factory()->make();
 
+    $plan = SubscriptionPlan::factory()->create();
     // Act & Assert
     loginAsAdmin();
 
@@ -62,6 +64,7 @@ it('can create business record', function () {
             'timezone' => $businessData->timezone,
             'is_active' => $businessData->is_active,
             'started_at' => $businessData->started_at,
+            'plan' => $plan->id,
             'owner' => [
                 'name' => $owner->name,
                 'email' => $owner->email,

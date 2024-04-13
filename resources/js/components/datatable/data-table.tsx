@@ -15,11 +15,11 @@ import {
 } from "../ui/table";
 import { useEffect, useState } from "react";
 import { router } from "@inertiajs/react";
-import { Filters, PaginationMeta } from "@/types";
+import { Filters, PaginationLinks, PaginationMeta } from "@/types";
 import { Search } from "lucide-react";
 import { DebounceInput } from "../ui/input";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { DataTablePagination } from "./data-table-pagination";
+import { DataTableSimplePagination } from "./data-table-pagination";
 import { pickBy } from "@/lib/utils";
 import { usePrevious } from "react-use";
 import { ScrollArea } from "../ui/scroll-area";
@@ -27,12 +27,15 @@ interface DataTableProps<TData, TColumnDef> {
   columns: ColumnDef<TData, TColumnDef>[];
   data: TData[];
   meta: PaginationMeta;
+  paginationLinks: PaginationLinks;
   filters: Filters;
+  onEdit?: (row: TData) => void;
 }
 export function DataTable<TData, TValue>({
   columns,
   data,
   meta,
+  paginationLinks,
   filters,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([
@@ -43,6 +46,7 @@ export function DataTable<TData, TValue>({
     search: filters.search || "",
     column: filters.column || "",
     sort: filters.sort || "",
+    perPage: filters.perPage || "15",
   });
 
   const preValues = usePrevious(filterValues);
@@ -112,7 +116,7 @@ export function DataTable<TData, TValue>({
           />
         </div>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="p-0 border-b">
         <ScrollArea className="h-[600px]">
           <Table>
             <TableHeader>
@@ -139,10 +143,9 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, {
+                        ...cell.getContext(),
+                      })}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -151,8 +154,13 @@ export function DataTable<TData, TValue>({
           </Table>
         </ScrollArea>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <DataTablePagination meta={meta} />
+      <CardFooter className="flex items-center justify-between px-4 py-2">
+        <DataTableSimplePagination
+          links={paginationLinks}
+          meta={meta}
+          perPage={filterValues.perPage}
+          onPageChange={value => handleChange("perPage", value)}
+        />
       </CardFooter>
     </Card>
   );
