@@ -95,10 +95,10 @@ export function DataTableSimplePagination({
 
   return (
     <>
-      <div className="flex-1 text-sm text-muted-foreground">
+      <div className="hidden text-sm text-muted-foreground">
         Showing {meta.from} - {meta.to} of {meta.total} rows.
       </div>
-      <div className="flex items-center space-x-6 lg:space-x-8">
+      <div className="flex-1 flex items-center justify-between space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select value={perPage} onValueChange={onPageChange}>

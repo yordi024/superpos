@@ -21,7 +21,7 @@ import { DebounceInput } from "../ui/input";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { DataTableSimplePagination } from "./data-table-pagination";
 import { pickBy } from "@/lib/utils";
-import { usePrevious } from "react-use";
+import usePrevious from "react-use/lib/usePrevious";
 import { ScrollArea } from "../ui/scroll-area";
 interface DataTableProps<TData, TColumnDef> {
   columns: ColumnDef<TData, TColumnDef>[];

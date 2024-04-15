@@ -46,9 +46,11 @@ type Team = (typeof groups)[number]["teams"][number];
 
 type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>;
 
-interface TeamSwitcherProps extends PopoverTriggerProps {}
+interface TeamSwitcherProps extends PopoverTriggerProps {
+  isOpen?: boolean;
+}
 
-export default function TeamSwitcher({ className }: TeamSwitcherProps) {
+export default function TeamSwitcher({ className, isOpen }: TeamSwitcherProps) {
   const [open, setOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState<Team>(groups[0].teams[0]);
 
@@ -58,11 +60,12 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
         <Button
           variant="outline"
           role="combobox"
+          size={isOpen ? "default" : "icon"}
           aria-expanded={open}
           aria-label="Select a team"
-          className={cn("w-[280px] justify-between", className)}
+          className={cn(isOpen && "justify-between w-[280px]", className)}
         >
-          <Avatar className="mr-2 h-5 w-5">
+          <Avatar className={cn("h-5 w-5", isOpen && "mr-2")}>
             <AvatarImage
               src={`https://avatar.vercel.sh/${selectedTeam.value}.png`}
               alt={selectedTeam.label}
@@ -70,8 +73,10 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             />
             <AvatarFallback>SC</AvatarFallback>
           </Avatar>
-          {selectedTeam.label}
-          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          {isOpen && selectedTeam.label}
+          {isOpen && (
+            <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">

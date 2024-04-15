@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { usePrevious } from "react-use";
+import usePrevious from "react-use/lib/usePrevious";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}

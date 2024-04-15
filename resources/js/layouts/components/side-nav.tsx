@@ -89,8 +89,8 @@ function NavItem({
       <TooltipTrigger asChild>
         <div
           className={cn(
-            "flex h-9 items-center gap-4 p-2.5 rounded-lg !text-lg text-muted-foreground transition-colors hover:text-foreground",
-            !isOpen && "p-0 w-9 justify-center",
+            "flex h-9 items-center bg-muted gap-4 px-3 py-2 rounded-lg !text-lg text-muted-foreground transition-colors hover:text-foreground",
+            !isOpen && "p-0 w-9 justify-center ",
             (route().current(item.href) || active) &&
               (isOpen
                 ? "text-accent-foreground"
