@@ -10,7 +10,6 @@ use App\Jobs\NewSubscriptionJob;
 use App\Models\BusinessLocation;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Subscription\SubscriptionPlan;
-use App\Models\Subscription\SubscriptionPlan;
 
 class AppSeeder extends Seeder
 {
