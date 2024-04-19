@@ -49,6 +49,11 @@ class Business extends Model
         return $this->hasMany(BusinessLocation::class);
     }
 
+    public function branches(): HasMany
+    {
+        return $this->hasMany(Branch::class);
+    }
+
     public function mainLocation(): HasOne
     {
         return $this->hasOne(BusinessLocation::class)->where('is_default', true);
