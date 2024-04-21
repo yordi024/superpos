@@ -2,19 +2,17 @@
 
 namespace App\Filament\Admin\Resources\BusinessResource\Pages;
 
-use Filament\Forms;
-use App\Models\User;
-use Filament\Actions;
-use App\Models\Business;
-use Filament\Forms\Form;
-use App\Jobs\ConfigNewBusinessJob;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Validation\Rules\Password;
-use Filament\Resources\Pages\CreateRecord;
-use App\Models\Subscription\SubscriptionPlan;
 use App\Filament\Admin\Resources\BusinessResource;
+use App\Jobs\ConfigNewBusinessJob;
 use App\Jobs\NewSubscriptionJob;
+use App\Models\Business;
+use App\Models\Subscription\SubscriptionPlan;
+use App\Models\User;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class CreateBusiness extends CreateRecord
 {

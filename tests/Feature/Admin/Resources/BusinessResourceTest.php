@@ -1,12 +1,12 @@
 <?php
 
-
-use App\Models\User;
-use App\Models\Business;
-use Filament\Actions\DeleteAction;
 use App\Filament\Admin\Resources\BusinessResource;
+use App\Models\Business;
 use App\Models\Subscription\SubscriptionPlan;
+use App\Models\User;
+use Filament\Actions\DeleteAction;
 use Livewire\Livewire;
+
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertSoftDeleted;
 use function Pest\Laravel\get;
@@ -18,9 +18,8 @@ it('can render business list page', function () {
     get(BusinessResource::getUrl('index'))->assertSuccessful();
 });
 
-
 it('can render business create page', function () {
-     // Act & Assert
+    // Act & Assert
     loginAsAdmin();
 
     get(BusinessResource::getUrl('create'))->assertSuccessful();
@@ -71,7 +70,7 @@ it('can create business record', function () {
                 'username' => $owner->username,
                 'password' => 'password',
                 'passwordConfirmation' => 'password',
-            ]
+            ],
         ])
         ->call('create')
         ->assertHasNoFormErrors();
@@ -115,8 +114,8 @@ it('can update business record', function () {
         'timezone' => $newData->timezone,
         'is_active' => $newData->is_active,
     ])
-    ->call('save')
-    ->assertHasNoFormErrors();
+        ->call('save')
+        ->assertHasNoFormErrors();
 
     expect($business->refresh())
         ->name->toBe($newData->name)

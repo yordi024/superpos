@@ -16,7 +16,7 @@ class Period
 
     protected int $period = 1;
 
-    public function __construct(string $interval = 'month', int $count = 1, Carbon | string $start = null)
+    public function __construct(string $interval = 'month', int $count = 1, Carbon|string|null $start = null)
     {
         $this->interval = $interval;
 
@@ -25,8 +25,8 @@ class Period
         $this->period = $count;
 
         $method = [
-            'day'   => 'addDays',
-            'year'  => 'addYears',
+            'day' => 'addDays',
+            'year' => 'addYears',
             'month' => 'addYears',
         ];
 

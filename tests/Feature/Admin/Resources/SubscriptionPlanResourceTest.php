@@ -1,16 +1,13 @@
 <?php
 
+use App\Filament\Admin\Resources\SubscriptionPlanResource;
+use App\Models\Subscription\SubscriptionPlan;
 use Livewire\Livewire;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\get;
 
-use Filament\Actions;
-use App\Filament\Admin\Resources\SubscriptionPlanResource;
-use App\Filament\Admin\Resources\SubscriptionPlanResource\Pages\ManageSubscriptionPlans;
-use App\Models\Subscription\SubscriptionPlan;
-
-it('can render subscription plans list page', function() {
+it('can render subscription plans list page', function () {
     // Act & Assert
     loginAsAdmin();
 

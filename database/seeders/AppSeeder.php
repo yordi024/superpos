@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Jobs\NewSubscriptionJob;
 use App\Models\Address;
 use App\Models\Business;
-use Illuminate\Database\Seeder;
-use App\Jobs\NewSubscriptionJob;
 use App\Models\BusinessLocation;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Subscription\SubscriptionPlan;
+use App\Models\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class AppSeeder extends Seeder
 {

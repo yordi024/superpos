@@ -39,9 +39,6 @@ class BaseResourceCollection extends ResourceCollection
     /**
      * Customize the pagination information for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  array $paginated
-     * @param  array $default
      * @return array
      */
     public function paginationInformation(Request $request, array $paginated, array $default)
@@ -53,14 +50,13 @@ class BaseResourceCollection extends ResourceCollection
 
         $customLinks = [];
 
-
         $path = $paginated['path'];
         $current_page = $paginated['current_page'];
         $total_pages = $paginated['last_page'];
 
         if ($current_page > 3) {
             $customLinks[] = [
-                'url' => $this->buildURL($path , 1, $query),
+                'url' => $this->buildURL($path, 1, $query),
                 'label' => 1,
                 'active' => false,
             ];
@@ -77,7 +73,7 @@ class BaseResourceCollection extends ResourceCollection
         foreach (range(1, $total_pages) as $i) {
             if ($i >= $current_page - 2 && $i <= $current_page + 2) {
                 $customLinks[] = [
-                    'url' => $this->buildURL($path , $i, $query),
+                    'url' => $this->buildURL($path, $i, $query),
                     'label' => $i,
                     'active' => $i === $current_page,
                 ];
@@ -95,7 +91,7 @@ class BaseResourceCollection extends ResourceCollection
 
         if ($current_page < $total_pages - 2) {
             $customLinks[] = [
-                'url' => $this->buildURL($path , $total_pages, $query),
+                'url' => $this->buildURL($path, $total_pages, $query),
                 'label' => $total_pages,
                 'active' => false,
             ];

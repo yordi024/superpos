@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\User;
 use App\Models\Business;
-use Illuminate\Support\Carbon;
 use App\Models\BusinessLocation;
 use App\Models\Subscription\Subscription;
+use App\Models\User;
+use Illuminate\Support\Carbon;
 
 it('has all business necessary fields', function () {
     // Arrange

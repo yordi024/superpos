@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Business;
 use App\Models\Branch;
+use App\Models\Business;
 
 it('has all business location necessary fields', function () {
     // Arrange

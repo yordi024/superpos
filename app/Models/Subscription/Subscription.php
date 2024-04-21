@@ -2,13 +2,13 @@
 
 namespace App\Models\Subscription;
 
-use App\Models\Business;
 use App\Enums\PlanInterval;
+use App\Models\Business;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Stringable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Stringable;
 
 class Subscription extends Model
 {
@@ -44,23 +44,19 @@ class Subscription extends Model
      */
     public function isActive(): bool
     {
-        return !$this->ended() || $this->onTrial();
+        return ! $this->ended() || $this->onTrial();
     }
 
     /**
      * Check if subscription is inactive.
-     *
-     * @return bool
      */
     public function isInactive(): bool
     {
-        return !$this->active();
+        return ! $this->active();
     }
 
     /**
      * Check if subscription is currently on trial.
-     *
-     * @return bool
      */
     public function onTrial(): bool
     {
@@ -69,8 +65,6 @@ class Subscription extends Model
 
     /**
      * Check if subscription is canceled.
-     *
-     * @return bool
      */
     public function canceled(): bool
     {
@@ -79,8 +73,6 @@ class Subscription extends Model
 
     /**
      * Check if subscription period has ended.
-     *
-     * @return bool
      */
     public function ended(): bool
     {
@@ -105,8 +97,8 @@ class Subscription extends Model
         $period = $plural ? $this->interval->plural() : $this->interval->value;
 
         return str($period)
-            ->when($plural, fn(Stringable $string) => $string->prepend(" {$this->interval_count} "))
-            ->prepend(trans('Every') . ' ')->toString();
+            ->when($plural, fn (Stringable $string) => $string->prepend(" {$this->interval_count} "))
+            ->prepend(trans('Every').' ')->toString();
     }
 
     public function scopeActive(Builder $query)

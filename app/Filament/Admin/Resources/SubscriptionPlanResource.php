@@ -3,7 +3,6 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\SubscriptionPlanResource\Pages;
-use App\Filament\Admin\Resources\SubscriptionPlanResource\RelationManagers;
 use App\Models\Subscription\SubscriptionPlan;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,6 +17,7 @@ class SubscriptionPlanResource extends Resource
     protected static ?string $label = 'Plans';
 
     protected static ?string $modelLabel = 'Plan';
+
     protected static ?string $model = SubscriptionPlan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -73,7 +73,7 @@ class SubscriptionPlanResource extends Resource
                         Forms\Components\TextInput::make('order')
                             ->required()
                             ->numeric(),
-                ])->columns(3),
+                    ])->columns(3),
                 Forms\Components\Fieldset::make('Limits')
                     ->schema([
                         Forms\Components\TextInput::make('users_limit')
@@ -92,7 +92,7 @@ class SubscriptionPlanResource extends Resource
                             ->label(trans('Locations Limit'))
                             ->required()
                             ->numeric(),
-                ])->columns(4),
+                    ])->columns(4),
                 // Forms\Components\TextInput::make('features')
                 //     ->required(),
                 Forms\Components\Toggle::make('is_active')

@@ -2,12 +2,12 @@
 
 namespace App\Filament\Admin\Resources\BusinessResource\Pages;
 
-use Filament\Forms;
-use Filament\Actions;
+use App\Filament\Admin\Resources\BusinessResource;
 use App\Models\Business;
+use Filament\Actions;
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Admin\Resources\BusinessResource;
 
 class EditBusiness extends EditRecord
 {
@@ -62,7 +62,7 @@ class EditBusiness extends EditRecord
                         Forms\Components\Toggle::make('is_active')
                             ->label('Make it active')
                             ->required(),
-                    ])
+                    ]),
             ]);
     }
 }

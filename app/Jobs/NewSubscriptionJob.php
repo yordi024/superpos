@@ -2,15 +2,15 @@
 
 namespace App\Jobs;
 
-use App\Models\Business;
 use App\Classes\Period;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Models\Business;
 use App\Models\Subscription\Subscription;
+use App\Models\Subscription\SubscriptionPlan;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Models\Subscription\SubscriptionPlan;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class NewSubscriptionJob implements ShouldQueue
 {
@@ -48,8 +48,7 @@ class NewSubscriptionJob implements ShouldQueue
             'starts_at' => $period->getStartDate(),
             'ends_at' => $period->getEndDate(),
             'canceled_at' => null,
-            'is_active' => true
+            'is_active' => true,
         ]);
     }
-
 }

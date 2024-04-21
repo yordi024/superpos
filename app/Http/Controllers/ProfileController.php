@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Inertia\Response;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ProfileController extends Controller
 {
@@ -36,13 +36,13 @@ class ProfileController extends Controller
             $request->user()->email_verified_at = null;
         }
 
-        if ($request->hasFile('avatar')){
+        if ($request->hasFile('avatar')) {
             $storageFolder = 'avatar';
             $file = $request->file('avatar');
-            $fileName =  str()->random(5).'__'.date('d_m_y_h_i_s').'.'.$file->getClientOriginalExtension();
+            $fileName = str()->random(5).'__'.date('d_m_y_h_i_s').'.'.$file->getClientOriginalExtension();
 
-            Storage::disk('public')->putFileAs($storageFolder, $file,$fileName);
-            $request->user()->avatar_url = 'storage/' .$storageFolder. '/' .$fileName;
+            Storage::disk('public')->putFileAs($storageFolder, $file, $fileName);
+            $request->user()->avatar_url = 'storage/'.$storageFolder.'/'.$fileName;
         }
 
         $request->user()->save();
