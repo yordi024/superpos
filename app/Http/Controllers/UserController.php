@@ -63,7 +63,7 @@ class UserController extends Controller
 
         User::create($data);
 
-        return back()->with('success', 'User created successfully');
+        return redirect(route('users.index'))->with('success', 'User created successfully');
     }
 
     /**
@@ -80,12 +80,15 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $data = $request->validated();
-        $data['is_active'] = $data['status'] === 'active' ? true : false;
-        unset($data['status']);
+
+        if (isset($data['status'])) {
+            $data['is_active'] = $data['status'] === 'active' ? true : false;
+            unset($data['status']);
+        }
 
         $user->update($data);
 
-        return back()->with('success', 'User updated successfully');
+        return redirect(route('users.index'))->with('success', 'User updated successfully');
     }
 
     /**
@@ -99,6 +102,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return back()->with('success', 'User deleted successfully');
+        return redirect(route('users.index'))->with('success', 'User deleted successfully');
     }
 }
