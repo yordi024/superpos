@@ -1,11 +1,16 @@
 FROM php:8.2-fpm
 
 # Install Nginx and other dependencies
-RUN apt-get update && \
-    apt-get install -y nginx && \
-    apt-get install -y libicu-dev &&\
-    apt-get install -y libzip &&\
-    docker-php-ext-install pdo pdo_mysql intl zip
+RUN apt-get update && \ apt-get install -y \
+    nginx \
+    libicu-dev \
+    libzip-dev
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo pdo_mysql intl zip mbstring exif pcntl bcmath gd
 
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
