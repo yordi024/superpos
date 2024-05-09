@@ -1,10 +1,14 @@
 FROM php:8.2-fpm
 
 # Install Nginx and other dependencies
-RUN apt-get update && \
-    apt-get install -y nginx && \
-    libicu-dev && \
-    libzip-dev
+RUN apt-get update && apt-get install -y \
+    nginx \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
