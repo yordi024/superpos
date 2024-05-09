@@ -1,5 +1,5 @@
 services:
-  backend:
+  app:
     image: php:8.2-fpm
     build:
       context: ./backend
@@ -7,11 +7,11 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./backend:/var/www/html
+      - '.:/var/www/html'
     networks:
       - app_network
     environment:
-      - APP_ENV=development
+      - APP_ENV=production
 
 networks:
   app_network:
