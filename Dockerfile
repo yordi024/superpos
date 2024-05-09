@@ -43,3 +43,4 @@ EXPOSE 8000
 
 # Start PHP-FPM and Nginx
 CMD php-fpm -F && nginx -g "daemon off;"
+RUN sed -i 's/127.0.0.1:9000/0.0.0.0:9000/g' /etc/php8.2/php-fpm.d/www.conf
