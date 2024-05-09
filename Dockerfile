@@ -4,6 +4,7 @@ FROM php:8.2-fpm
 RUN apt-get update && \
     apt-get install -y nginx && \
     apt-get install -y libicu-dev &&\
+    apt-get install -y libzip &&\
     docker-php-ext-install pdo pdo_mysql intl zip
 
 # Copy Nginx configuration
