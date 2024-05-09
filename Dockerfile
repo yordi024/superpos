@@ -1,45 +1,52 @@
 FROM php:8.2-fpm
 
-# Install Nginx and other dependencies
-RUN apt-get update && apt-get install -y \
-    nginx \
-    curl \
-    libzip-dev \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql intl zip mbstring exif pcntl bcmath gd
-
-# Copy Nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Remove default Nginx configuration if it exists
-RUN if [ -f /etc/nginx/sites-enabled/default ]; then rm /etc/nginx/sites-enabled/default; fi
+# Copy composer.lock and composer.json
+COPY composer.lock composer.json /var/www/
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www
 
-# Copy project files
-COPY . .
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl \
+    libonig-dev \
+    libzip-dev \
+    libgd-dev
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+#Mine
 
-# Set permissions for Laravel project directory
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 /var/www/html/storage
-RUN chmod -R 775 /var/www/html/storage/logs   # Set permissions for logs directory
+# Install extensions
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-configure gd --with-external-gd
+RUN docker-php-ext-install gd
 
-# Install composer dependencies
+# Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install
 
-# Expose port 8000
-EXPOSE 8000
+# Add user for laravel application
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
 
-# Start PHP-FPM and Nginx
-CMD php-fpm -F && nginx -g "daemon off;"
+# Copy existing application directory contents
+COPY . /var/www
+
+# Copy existing application directory permissions
+COPY --chown=www:www . /var/www
+
+# Change current user to www
+USER www
+
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]
